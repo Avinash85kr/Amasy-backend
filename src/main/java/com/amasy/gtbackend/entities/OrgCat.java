@@ -16,6 +16,7 @@ public class OrgCat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orgId;
+    @Column(name = "orgCatName")
     private String orgType;
     @OneToMany(mappedBy = "orgCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TpUser> tpUsers = new ArrayList<>();

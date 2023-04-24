@@ -35,8 +35,8 @@ public class OrgCatServiceImpl implements OrgCatService {
 
     @Override
     public OrgCatDto getOrgById(Integer orgId) {
-        OrgCat orgCat = this.orgCatRepo.findById(orgId).orElseThrow(() -> new ResourceNotFoundException("Organization", "Id", orgId));
-        return this.modelMapper.map(orgCat, OrgCatDto.class);
+        OrgCat getOrg = this.orgCatRepo.findById(orgId).orElseThrow(() -> new ResourceNotFoundException("Organization", "Id", orgId));
+        return this.modelMapper.map(getOrg, OrgCatDto.class);
     }
 
     @Override
