@@ -1,5 +1,6 @@
 package com.amasy.gtbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,5 +20,6 @@ public class OrgCat {
     @Column(name = "orgCatName")
     private String orgType;
     @OneToMany(mappedBy = "orgCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<TpUser> tpUsers = new ArrayList<>();
 }

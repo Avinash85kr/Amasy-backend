@@ -1,5 +1,6 @@
 package com.amasy.gtbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,5 +19,6 @@ public class SchemeCat {
     private Integer schemeId;
     private String schemeName;
     @OneToMany(mappedBy = "schemeCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<TpUser> tpUsers = new ArrayList<>();
 }

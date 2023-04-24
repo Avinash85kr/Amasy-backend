@@ -26,7 +26,7 @@ public class TpUser {
     @NotBlank
     private String orgName;
     @ManyToOne
-    @JoinColumn(name = "org_type_id")
+    @JoinColumn(name = "org_cat_id")
     private OrgCat orgCategory;
     @NotBlank
     private String affiliation;
@@ -37,9 +37,11 @@ public class TpUser {
     @NotEmpty
     private String roaDist;
     @NotEmpty
+    private String roaCity;
+    @NotEmpty
     private String roaState;
     @NotEmpty
-    private String roaPIN;
+    private String roaPin;
     @NotEmpty
     private String roaTelNo;
     @NotEmpty
@@ -47,7 +49,7 @@ public class TpUser {
     @NotEmpty
     private String roaEmail;
     @NotEmpty
-    private String roaGST;
+    private String roaGst;
 
     // Regional or state office address
     @NotEmpty
@@ -55,9 +57,11 @@ public class TpUser {
     @NotEmpty
     private String soaDist;
     @NotEmpty
+    private String soaCity;
+    @NotEmpty
     private String soaState;
     @NotEmpty
-    private String soaPIN;
+    private String soaPin;
     @NotEmpty
     private String soaTelNo;
     @NotEmpty
@@ -65,7 +69,7 @@ public class TpUser {
     @NotEmpty
     private String soaEmail;
     @NotEmpty
-    private String soaGST;
+    private String soaGst;
     @NotBlank
     private String website;
     @NotEmpty
@@ -80,7 +84,7 @@ public class TpUser {
     @NotEmpty
     private String hoQualification;
     @NotEmpty
-    private String hoDOB;
+    private String hoDob;
     @NotEmpty
     private String hoExp;
     @NotEmpty
