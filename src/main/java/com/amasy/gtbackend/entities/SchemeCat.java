@@ -21,4 +21,7 @@ public class SchemeCat {
     @OneToMany(mappedBy = "schemeCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private List<TpUser> tpUsers = new ArrayList<>();
+    @OneToMany(mappedBy = "schemeCat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<SrcUser> srcUsers = new ArrayList<>();
 }
