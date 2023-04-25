@@ -1,14 +1,18 @@
 package com.amasy.gtbackend.services.impl;
 
+import com.amasy.gtbackend.config.AppConstants;
 import com.amasy.gtbackend.entities.OrgCat;
+import com.amasy.gtbackend.entities.Role;
 import com.amasy.gtbackend.entities.SchemeCat;
 import com.amasy.gtbackend.entities.TpUser;
 import com.amasy.gtbackend.exceptions.ResourceNotFoundException;
 import com.amasy.gtbackend.repositories.OrgCatRepo;
+import com.amasy.gtbackend.repositories.RoleRepo;
 import com.amasy.gtbackend.repositories.ScheCatRepo;
 import com.amasy.gtbackend.repositories.TpUserRepo;
 import com.amasy.gtbackend.services.TpUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,19 @@ public class TpUserServiceImpl implements TpUserService {
     private ScheCatRepo scheCatRepo;
     @Autowired
     private OrgCatRepo orgCatRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepo roleRepo;
+
+    @Override
+    public TpUser registerNewTpUser(TpUser tpUser) {
+        tpUser.setPassword(this.passwordEncoder.encode(tpUser.getPassword()));
+        Role role = this.roleRepo.findById(AppConstants.TP_USER).get();
+        tpUser.getRoles().add(role);
+        TpUser newTpUser = this.tpUserRepo.save(tpUser);
+        return newTpUser;
+    }
 
     @Override
     public TpUser createTpUser(TpUser tpUser) {
@@ -81,7 +98,7 @@ public class TpUserServiceImpl implements TpUserService {
         tpUser.setPcAltPhNumber(tpUser.getPcAltPhNumber());
         tpUser.setPcEmail(tpUser.getPcEmail());
         tpUser.setPcAltEmail(tpUser.getPcAltEmail());
-        tpUser.setUserName(tpUser.getUserName());
+        tpUser.setUserName(tpUser.getUsername());
         tpUser.setPassword(tpUser.getPassword());
         TpUser savedTpUser = this.tpUserRepo.save(tpUser);
         return savedTpUser;

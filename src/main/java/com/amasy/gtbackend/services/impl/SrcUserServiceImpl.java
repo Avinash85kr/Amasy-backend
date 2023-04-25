@@ -1,12 +1,16 @@
 package com.amasy.gtbackend.services.impl;
 
+import com.amasy.gtbackend.config.AppConstants;
+import com.amasy.gtbackend.entities.Role;
 import com.amasy.gtbackend.entities.SchemeCat;
 import com.amasy.gtbackend.entities.SrcUser;
 import com.amasy.gtbackend.exceptions.ResourceNotFoundException;
+import com.amasy.gtbackend.repositories.RoleRepo;
 import com.amasy.gtbackend.repositories.ScheCatRepo;
 import com.amasy.gtbackend.repositories.SrcUserRepo;
 import com.amasy.gtbackend.services.SrcUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +21,15 @@ public class SrcUserServiceImpl implements SrcUserService {
     private SrcUserRepo srcUserRepo;
     @Autowired
     private ScheCatRepo scheCatRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepo roleRepo;
     @Override
     public SrcUser createSrcUser(SrcUser srcUser) {
+        srcUser.setPassword(this.passwordEncoder.encode(srcUser.getPassword()));
+        Role role = this.roleRepo.findById(AppConstants.SRC_USER).get();
+        srcUser.getRoles().add(role);
         SrcUser user = this.srcUserRepo.save(srcUser);
         return user;
     }
@@ -31,7 +42,7 @@ public class SrcUserServiceImpl implements SrcUserService {
         user.setPhNum(user.getPhNum());
         user.setOprState(user.getOprState());
         user.setSchemeCat(scheme);
-        user.setUserName(user.getUserName());
+        user.setUserName(user.getUsername());
         user.setPassword(user.getPassword());
         SrcUser savedUser = this.srcUserRepo.save(user);
         return savedUser;
