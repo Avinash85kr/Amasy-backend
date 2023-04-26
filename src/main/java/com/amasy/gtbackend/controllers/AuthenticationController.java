@@ -5,6 +5,7 @@ import com.amasy.gtbackend.entities.TpUser;
 import com.amasy.gtbackend.exceptions.ApiException;
 import com.amasy.gtbackend.payloads.JwtAuthenticationRequest;
 import com.amasy.gtbackend.payloads.JwtAuthenticationResponse;
+import com.amasy.gtbackend.repositories.TpUserRepo;
 import com.amasy.gtbackend.security.JwtTokenHelper;
 import com.amasy.gtbackend.services.TpUserService;
 import org.modelmapper.ModelMapper;
@@ -36,6 +37,9 @@ public class AuthenticationController {
     private TpUserService tpUserService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TpUserRepo tpUserRepo;
+
     @PostMapping("/login")
     public ResponseEntity<JwtAuthenticationResponse> createToken(@RequestBody JwtAuthenticationRequest request) {
         this.authenticate(request.getUserName(), request.getPassword());
@@ -43,8 +47,8 @@ public class AuthenticationController {
         String token = this.jwtTokenHelper.generateToken(userDetails);
         JwtAuthenticationResponse response = new JwtAuthenticationResponse();
         response.setToken(token);
-        response.setTpUser((TpUser)userDetails);
-        response.setSrcUser((SrcUser)userDetails);
+        if (this.tpUserRepo.findByUserName(request.getUserName()).isPresent()) response.setTpUser((TpUser)userDetails);
+        else response.setSrcUser((SrcUser)userDetails);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
