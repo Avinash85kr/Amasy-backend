@@ -1,5 +1,6 @@
 package com.amasy.gtbackend.config;
 
+import com.amasy.gtbackend.entities.SrcUser;
 import com.amasy.gtbackend.security.CustomUserDetailService;
 import com.amasy.gtbackend.security.JwtAuthenticationEntryPoint;
 import com.amasy.gtbackend.security.JwtAuthenticationFilter;
@@ -40,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers("/api/v1/tpUsers/**").hasAnyAuthority("SRC_USER", "TP_USER")
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -6,9 +6,6 @@ import com.amasy.gtbackend.entities.Role;
 import com.amasy.gtbackend.entities.SchemeCat;
 import com.amasy.gtbackend.entities.TpUser;
 import com.amasy.gtbackend.exceptions.ResourceNotFoundException;
-import com.amasy.gtbackend.payloads.OrgCatDto;
-import com.amasy.gtbackend.payloads.RoleDto;
-import com.amasy.gtbackend.payloads.SchCatDto;
 import com.amasy.gtbackend.payloads.TpUserDto;
 import com.amasy.gtbackend.repositories.OrgCatRepo;
 import com.amasy.gtbackend.repositories.RoleRepo;
@@ -16,13 +13,11 @@ import com.amasy.gtbackend.repositories.ScheCatRepo;
 import com.amasy.gtbackend.repositories.TpUserRepo;
 import com.amasy.gtbackend.services.TpUserService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.Provider;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,24 +38,17 @@ public class TpUserServiceImpl implements TpUserService {
     private RoleRepo roleRepo;
 
     @Override
-    public TpUserDto registerNewTpUser(TpUserDto tpUserDto) {
+    public TpUserDto registerNewTpUser(TpUserDto tpUserDto, Integer schId, Integer orgId) {
+        SchemeCat schemeCat = this.scheCatRepo.findById(schId).orElseThrow(() -> new ResourceNotFoundException("Scheme", "Id", schId));
+        OrgCat orgCat = this.orgCatRepo.findById(orgId).orElseThrow(() -> new ResourceNotFoundException("Organization", "Id", orgId));
         TpUser tpUser = this.modelMapper.map(tpUserDto, TpUser.class);
         tpUser.setPassword(this.passwordEncoder.encode(tpUser.getPassword()));
         Role role = this.roleRepo.findById(AppConstants.TP_USER).get();
+        tpUser.setSchemeCategory(schemeCat);
+        tpUser.setOrgCategory(orgCat);
         tpUser.getRoles().add(role);
         TpUser newTpUser = this.tpUserRepo.save(tpUser);
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setAmbiguityIgnored(true);
-        return mapper.map(newTpUser, TpUserDto.class);
-    }
-
-    @Override
-    public TpUserDto createTpUser(TpUserDto tpUserDto) {
-        TpUser tpUser = this.modelMapper.map(tpUserDto, TpUser.class);
-        TpUser savedTpUser = this.tpUserRepo.save(tpUser);
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setAmbiguityIgnored(true);
-        return mapper.map(savedTpUser, TpUserDto.class);
+        return this.modelMapper.map(newTpUser, TpUserDto.class);
     }
 
     @Override
@@ -116,18 +104,16 @@ public class TpUserServiceImpl implements TpUserService {
         tpUser.setPcEmail(tpUserDto.getPcEmail());
         tpUser.setPcAltEmail(tpUserDto.getPcAltEmail());
         tpUser.setUserName(tpUserDto.getUserName());
-        tpUser.setPassword(tpUserDto.getPassword());
+        tpUser.setPassword(this.passwordEncoder.encode(tpUserDto.getPassword()));
         TpUser updatedTpUser = this.tpUserRepo.save(tpUser);
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setAmbiguityIgnored(true);
-        return mapper.map(updatedTpUser, TpUserDto.class);
+        return this.modelMapper.map(updatedTpUser, TpUserDto.class);
     }
 
     @Override
     public TpUserDto getTpUserById(Integer tpUserId) {
         TpUser tpUser = this.tpUserRepo.findById(tpUserId).orElseThrow(() -> new ResourceNotFoundException("TP", "Id", tpUserId));
         ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setAmbiguityIgnored(true);
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT).setAmbiguityIgnored(true);
         return mapper.map(tpUser, TpUserDto.class);
     }
 

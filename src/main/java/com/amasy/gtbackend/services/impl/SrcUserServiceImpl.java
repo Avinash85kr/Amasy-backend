@@ -31,8 +31,10 @@ public class SrcUserServiceImpl implements SrcUserService {
     @Autowired
     private RoleRepo roleRepo;
     @Override
-    public SrcUserDto createSrcUser(SrcUserDto srcUserDto) {
+    public SrcUserDto createSrcUser(SrcUserDto srcUserDto, Integer schId) {
         SrcUser srcUser = this.modelMapper.map(srcUserDto, SrcUser.class);
+        SchemeCat schemeCat = this.scheCatRepo.findById(schId).orElseThrow(() -> new ResourceNotFoundException("Scheme", "Id", schId));
+        srcUser.setSchemeCat(schemeCat);
         srcUser.setPassword(this.passwordEncoder.encode(srcUser.getPassword()));
         Role role = this.roleRepo.findById(AppConstants.SRC_USER).get();
         srcUser.getRoles().add(role);
@@ -49,7 +51,7 @@ public class SrcUserServiceImpl implements SrcUserService {
         user.setOprState(srcUserDto.getOprState());
         user.setSchemeCat(scheme);
         user.setUserName(srcUserDto.getUserName());
-        user.setPassword(srcUserDto.getPassword());
+        user.setPassword(this.passwordEncoder.encode(srcUserDto.getPassword()));
         SrcUser savedUser = this.srcUserRepo.save(user);
         return this.modelMapper.map(savedUser, SrcUserDto.class);
     }

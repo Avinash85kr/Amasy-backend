@@ -33,9 +33,19 @@ public class SrcUser implements UserDetails {
     @JoinColumn(name = "schemeId")
     private SchemeCat schemeCat;
     private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     private String password;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userRole")
+    @JoinTable(name = "src_user_role", joinColumns = @JoinColumn(name = "user", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
 
     @Override

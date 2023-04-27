@@ -5,7 +5,7 @@ import com.amasy.gtbackend.payloads.SrcUserDto;
 import java.util.List;
 
 public interface SrcUserService {
-    SrcUserDto createSrcUser(SrcUserDto srcUserDto);
+    SrcUserDto createSrcUser(SrcUserDto srcUserDto, Integer schId);
     SrcUserDto updateSrcUser(SrcUserDto srcUserDto, Integer srcId);
     SrcUserDto getSrcUserById(Integer srcId);
     List<SrcUserDto> getAllSrcUser();

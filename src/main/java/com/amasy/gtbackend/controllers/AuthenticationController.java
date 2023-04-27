@@ -19,10 +19,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -62,9 +59,9 @@ public class AuthenticationController {
             throw new ApiException("Incorrect username or password !!");
         }
     }
-    @PostMapping("/register")
-    public ResponseEntity<TpUserDto> register(@Valid @RequestBody TpUserDto tpUSerDto){
-        TpUserDto registerUser = this.tpUserService.registerNewTpUser(tpUSerDto);
+    @PostMapping("/register/schemeId/{schId}/orgId/{orgId}")
+    public ResponseEntity<TpUserDto> register(@Valid @RequestBody TpUserDto tpUSerDto, @PathVariable Integer schId, @PathVariable Integer orgId){
+        TpUserDto registerUser = this.tpUserService.registerNewTpUser(tpUSerDto, schId, orgId);
         return new ResponseEntity<>(registerUser, HttpStatus.CREATED);
     }
 }
