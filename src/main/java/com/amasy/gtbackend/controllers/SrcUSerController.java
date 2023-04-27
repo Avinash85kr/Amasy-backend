@@ -1,7 +1,7 @@
 package com.amasy.gtbackend.controllers;
 
-import com.amasy.gtbackend.entities.SrcUser;
 import com.amasy.gtbackend.payloads.ApiResponse;
+import com.amasy.gtbackend.payloads.SrcUserDto;
 import com.amasy.gtbackend.services.SrcUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +17,23 @@ public class SrcUSerController {
     @Autowired
     private SrcUserService srcUserService;
     @PostMapping("/")
-    public ResponseEntity<SrcUser> createSrcUser(@Valid @RequestBody SrcUser srcUser){
-        SrcUser savedUser = this.srcUserService.createSrcUser(srcUser);
+    public ResponseEntity<SrcUserDto> createSrcUser(@Valid @RequestBody SrcUserDto srcUser){
+        SrcUserDto savedUser = this.srcUserService.createSrcUser(srcUser);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
     @PutMapping("/{srcId}")
-    public ResponseEntity<SrcUser> updateSrcUser(@Valid @RequestBody SrcUser srcUser, @PathVariable Integer srcId) {
-        SrcUser updateUser = this.srcUserService.updateSrcUser(srcUser, srcId);
+    public ResponseEntity<SrcUserDto> updateSrcUser(@Valid @RequestBody SrcUserDto srcUser, @PathVariable Integer srcId) {
+        SrcUserDto updateUser = this.srcUserService.updateSrcUser(srcUser, srcId);
         return new ResponseEntity<>(updateUser, HttpStatus.OK);
     }
     @GetMapping("/{srcId}")
-    public ResponseEntity<SrcUser> getSrcUserById(@PathVariable Integer srcId){
-        SrcUser getUserById = this.srcUserService.getSrcUserById(srcId);
+    public ResponseEntity<SrcUserDto> getSrcUserById(@PathVariable Integer srcId){
+        SrcUserDto getUserById = this.srcUserService.getSrcUserById(srcId);
         return ResponseEntity.ok(getUserById);
     }
     @GetMapping("/")
-    public ResponseEntity<List<SrcUser>> getAllSrcUser(){
-        List<SrcUser> allUsers = this.srcUserService.getAllSrcUser();
+    public ResponseEntity<List<SrcUserDto>> getAllSrcUser(){
+        List<SrcUserDto> allUsers = this.srcUserService.getAllSrcUser();
         return ResponseEntity.ok(allUsers);
     }
     @DeleteMapping("/{srcId}")

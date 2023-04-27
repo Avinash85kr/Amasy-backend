@@ -19,9 +19,9 @@ public class SchemeCat {
     private Integer schemeId;
     private String schemeName;
     @OneToMany(mappedBy = "schemeCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
     private List<TpUser> tpUsers = new ArrayList<>();
     @OneToMany(mappedBy = "schemeCat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
     private List<SrcUser> srcUsers = new ArrayList<>();
 }

@@ -20,6 +20,6 @@ public class OrgCat {
     @Column(name = "orgCatName")
     private String orgType;
     @OneToMany(mappedBy = "orgCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
     private List<TpUser> tpUsers = new ArrayList<>();
 }

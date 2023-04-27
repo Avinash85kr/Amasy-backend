@@ -1,14 +1,14 @@
 package com.amasy.gtbackend.services;
 
-import com.amasy.gtbackend.entities.TpUser;
+import com.amasy.gtbackend.payloads.TpUserDto;
 
 import java.util.List;
 
 public interface TpUserService {
-    TpUser registerNewTpUser(TpUser tpUser);
-    TpUser createTpUser(TpUser tpUser);
-    TpUser updateTpUser(TpUser tpUser, Integer tpUserId);
-    TpUser getTpUserById(Integer tpUserId);
-    List<TpUser> getAllTpUser();
+    TpUserDto registerNewTpUser(TpUserDto tpUserDto);
+    TpUserDto createTpUser(TpUserDto tpUserDto);
+    TpUserDto updateTpUser(TpUserDto tpUserDto, Integer tpUserId);
+    TpUserDto getTpUserById(Integer tpUserId);
+    List<TpUserDto> getAllTpUser();
     void deleteTpUser(Integer tpUserId);
 }

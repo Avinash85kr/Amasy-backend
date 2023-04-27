@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class SrcUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int srcId;
+    private int id;
     @NotEmpty
     private String name;
     @NotEmpty
@@ -34,7 +34,7 @@ public class SrcUser implements UserDetails {
     private SchemeCat schemeCat;
     private String userName;
     private String password;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "userRole")
     private Set<Role> roles = new HashSet<>();
 

@@ -20,11 +20,11 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if(this.tpUserRepo.findByUserName(username).isPresent()){
-            TpUser tpUser = this.tpUserRepo.findByUserName(username).orElseThrow(() -> new ApiException("TP User or SRC User not found with " + username + " this userName !!"));
+            TpUser tpUser = this.tpUserRepo.findByUserName(username).orElseThrow(() -> new ApiException("UserName not found with " + username + " this userName !!"));
             return tpUser;
         }
         else {
-            SrcUser srcUser = this.srcUserRepo.findByUserName(username).orElseThrow(() -> new ApiException("TP User or SRC User not found with " + username + " this userName !!"));
+            SrcUser srcUser = this.srcUserRepo.findByUserName(username).orElseThrow(() -> new ApiException("UserName not found with " + username + " this userName !!"));
             return srcUser;
         }
     }

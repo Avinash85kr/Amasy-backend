@@ -1,45 +1,28 @@
-package com.amasy.gtbackend.entities;
+package com.amasy.gtbackend.payloads;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.Collection;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class TpUser implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class TpUserDto {
     private int id;
-
-//    Scheme & Organisation detail
-
-    @ManyToOne
-    @JoinColumn(name = "scheme_id")
-    private SchemeCat schemeCategory;
+    private SchCatDto schemeCategory;
     @NotBlank
     private String orgName;
-    @ManyToOne
-    @JoinColumn(name = "org_cat_id")
-    private OrgCat orgCategory;
+    private OrgCatDto orgCategory;
     @NotBlank
     private String affiliation;
-
-    // Registered office address
     @NotEmpty
     private String roaAddress;
     @NotEmpty
@@ -58,8 +41,6 @@ public class TpUser implements UserDetails {
     private String roaEmail;
     @NotEmpty
     private String roaGst;
-
-    // Regional or state office address
     @NotEmpty
     private String soaAddress;
     @NotEmpty
@@ -84,9 +65,6 @@ public class TpUser implements UserDetails {
     private String panCard;
     @NotEmpty
     private String panNumber;
-
-//    Head owner detail
-
     @NotEmpty
     private String hoName;
     @NotEmpty
@@ -114,9 +92,6 @@ public class TpUser implements UserDetails {
     private String hoPr1;
     private String hoPr2;
     private String hoPr3;
-
-//    Project contact personal detail
-
     @NotEmpty
     private String pcName;
     @NotEmpty
@@ -136,40 +111,18 @@ public class TpUser implements UserDetails {
     @NotEmpty
     @Email
     private String pcAltEmail;
+    @NotEmpty
     private String userName;
     private String password;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userRole")
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleDto> roles = new HashSet<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-        return authorities;
-    }
+//    @JsonIgnore
+//    public String getPassword(){
+//        return  this.password;
+//    }
+//    @JsonProperty
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 
-    @Override
-    public String getUsername() {
-        return this.userName;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }

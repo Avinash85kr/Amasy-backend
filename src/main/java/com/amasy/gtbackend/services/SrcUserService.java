@@ -1,13 +1,13 @@
 package com.amasy.gtbackend.services;
 
-import com.amasy.gtbackend.entities.SrcUser;
+import com.amasy.gtbackend.payloads.SrcUserDto;
 
 import java.util.List;
 
 public interface SrcUserService {
-    SrcUser createSrcUser(SrcUser srcUser);
-    SrcUser updateSrcUser(SrcUser srcUser, Integer srcId);
-    SrcUser getSrcUserById(Integer srcId);
-    List<SrcUser> getAllSrcUser();
+    SrcUserDto createSrcUser(SrcUserDto srcUserDto);
+    SrcUserDto updateSrcUser(SrcUserDto srcUserDto, Integer srcId);
+    SrcUserDto getSrcUserById(Integer srcId);
+    List<SrcUserDto> getAllSrcUser();
     void deleteSrcUser(Integer srcId);
 }

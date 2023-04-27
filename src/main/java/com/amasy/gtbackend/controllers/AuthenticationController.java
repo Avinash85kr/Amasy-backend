@@ -5,6 +5,8 @@ import com.amasy.gtbackend.entities.TpUser;
 import com.amasy.gtbackend.exceptions.ApiException;
 import com.amasy.gtbackend.payloads.JwtAuthenticationRequest;
 import com.amasy.gtbackend.payloads.JwtAuthenticationResponse;
+import com.amasy.gtbackend.payloads.TpUserDto;
+import com.amasy.gtbackend.payloads.SrcUserDto;
 import com.amasy.gtbackend.repositories.TpUserRepo;
 import com.amasy.gtbackend.security.JwtTokenHelper;
 import com.amasy.gtbackend.services.TpUserService;
@@ -47,8 +49,8 @@ public class AuthenticationController {
         String token = this.jwtTokenHelper.generateToken(userDetails);
         JwtAuthenticationResponse response = new JwtAuthenticationResponse();
         response.setToken(token);
-        if (this.tpUserRepo.findByUserName(request.getUserName()).isPresent()) response.setTpUser((TpUser)userDetails);
-        else response.setSrcUser((SrcUser)userDetails);
+        if (this.tpUserRepo.findByUserName(request.getUserName()).isPresent()) response.setTpUser(this.modelMapper.map((TpUser)userDetails, TpUserDto.class));
+        else response.setSrcUser(this.modelMapper.map((SrcUser)userDetails, SrcUserDto.class));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -61,8 +63,8 @@ public class AuthenticationController {
         }
     }
     @PostMapping("/register")
-    public ResponseEntity<TpUser> register(@Valid @RequestBody TpUser tpUSer){
-        TpUser registerUser = this.tpUserService.registerNewTpUser(tpUSer);
+    public ResponseEntity<TpUserDto> register(@Valid @RequestBody TpUserDto tpUSerDto){
+        TpUserDto registerUser = this.tpUserService.registerNewTpUser(tpUSerDto);
         return new ResponseEntity<>(registerUser, HttpStatus.CREATED);
     }
 }
