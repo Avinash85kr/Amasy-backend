@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -114,6 +117,8 @@ public class TpUserDto {
     @NotEmpty
     private String userName;
     private String password;
+    private String status;
+    private Date addedDate;
     private Set<RoleDto> roles = new HashSet<>();
 
 //    @JsonIgnore

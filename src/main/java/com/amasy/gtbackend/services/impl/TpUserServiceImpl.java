@@ -7,6 +7,7 @@ import com.amasy.gtbackend.entities.SchemeCat;
 import com.amasy.gtbackend.entities.TpUser;
 import com.amasy.gtbackend.exceptions.ResourceNotFoundException;
 import com.amasy.gtbackend.payloads.TpUserDto;
+import com.amasy.gtbackend.payloads.TpUserResponse;
 import com.amasy.gtbackend.repositories.OrgCatRepo;
 import com.amasy.gtbackend.repositories.RoleRepo;
 import com.amasy.gtbackend.repositories.ScheCatRepo;
@@ -15,9 +16,14 @@ import com.amasy.gtbackend.services.TpUserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +53,8 @@ public class TpUserServiceImpl implements TpUserService {
         tpUser.setSchemeCategory(schemeCat);
         tpUser.setOrgCategory(orgCat);
         tpUser.getRoles().add(role);
+        tpUser.setStatus("Pending");
+        tpUser.setAddedDate(new Date());
         TpUser newTpUser = this.tpUserRepo.save(tpUser);
         return this.modelMapper.map(newTpUser, TpUserDto.class);
     }
@@ -105,6 +113,7 @@ public class TpUserServiceImpl implements TpUserService {
         tpUser.setPcAltEmail(tpUserDto.getPcAltEmail());
         tpUser.setUserName(tpUserDto.getUserName());
         tpUser.setPassword(this.passwordEncoder.encode(tpUserDto.getPassword()));
+        tpUser.setStatus(tpUserDto.getStatus());
         TpUser updatedTpUser = this.tpUserRepo.save(tpUser);
         return this.modelMapper.map(updatedTpUser, TpUserDto.class);
     }
@@ -118,12 +127,20 @@ public class TpUserServiceImpl implements TpUserService {
     }
 
     @Override
-    public List<TpUserDto> getAllTpUser() {
-        List<TpUser> tpUsers = this.tpUserRepo.findAll();
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setAmbiguityIgnored(true);
-        List<TpUserDto> tpUserDtos = tpUsers.stream().map(tpUser -> mapper.map(tpUser, TpUserDto.class)).collect(Collectors.toList());
-        return tpUserDtos;
+    public TpUserResponse getAllTpUser(Integer pageNumber, Integer pageSize, String sortBy, String sortDirection) {
+        Sort sort = (sortDirection.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<TpUser> pageTpUsers = this.tpUserRepo.findAll(pageable);
+        List<TpUser> tpUsers = pageTpUsers.getContent();
+        List<TpUserDto> tpUserDtos = tpUsers.stream().map(tpUser -> this.modelMapper.map(tpUser, TpUserDto.class)).collect(Collectors.toList());
+        TpUserResponse tpUserResp = new TpUserResponse();
+        tpUserResp.setPageNumber(pageTpUsers.getNumber());
+        tpUserResp.setContent(tpUserDtos);
+        tpUserResp.setPageSize(pageTpUsers.getSize());
+        tpUserResp.setTotalElements(pageTpUsers.getTotalElements());
+        tpUserResp.setTotalPages(pageTpUsers.getTotalPages());
+        tpUserResp.setLastPage(pageTpUsers.isLast());
+        return tpUserResp;
     }
 
     @Override

@@ -11,10 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -147,6 +144,11 @@ public class TpUser implements UserDetails {
     }
 
     private String password;
+    private String status;
+    @Column(name = "tmstmp")
+    private Date addedDate;
+    @OneToMany(mappedBy = "tpUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Center> centers = new ArrayList<>();
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "tp_user_role", joinColumns = @JoinColumn(name = "user", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))

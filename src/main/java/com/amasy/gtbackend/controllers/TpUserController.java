@@ -1,7 +1,9 @@
 package com.amasy.gtbackend.controllers;
 
+import com.amasy.gtbackend.config.AppConstants;
 import com.amasy.gtbackend.payloads.ApiResponse;
 import com.amasy.gtbackend.payloads.TpUserDto;
+import com.amasy.gtbackend.payloads.TpUserResponse;
 import com.amasy.gtbackend.services.TpUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +34,11 @@ public class TpUserController {
         return ResponseEntity.ok(tpUserById);
     }
     @GetMapping("/")
-    public ResponseEntity<List<TpUserDto>> getAllUsers(){
-        List<TpUserDto> allTpUsers = this.tpUserService.getAllTpUser();
+    public ResponseEntity<TpUserResponse> getAllUsers(@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)Integer pageNumber,
+                                                      @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false)Integer pageSize,
+                                                      @RequestParam(value = "sortBy", defaultValue = "id", required = false)String sortBy,
+                                                      @RequestParam(value = "sortDirection", defaultValue = AppConstants.SORT_DIRECTION, required = false)String sortDirection){
+        TpUserResponse allTpUsers = this.tpUserService.getAllTpUser(pageNumber, pageSize, sortBy, sortDirection);
         return ResponseEntity.ok(allTpUsers);
     }
     @DeleteMapping("/{tpUserId}")

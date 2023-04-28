@@ -59,7 +59,7 @@ public class AuthenticationController {
             throw new ApiException("Incorrect username or password !!");
         }
     }
-    @PostMapping("/register/schemeId/{schId}/orgId/{orgId}")
+    @PostMapping("/register/schemes/{schId}/orgs/{orgId}")
     public ResponseEntity<TpUserDto> register(@Valid @RequestBody TpUserDto tpUSerDto, @PathVariable Integer schId, @PathVariable Integer orgId){
         TpUserDto registerUser = this.tpUserService.registerNewTpUser(tpUSerDto, schId, orgId);
         return new ResponseEntity<>(registerUser, HttpStatus.CREATED);
