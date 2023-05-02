@@ -18,7 +18,7 @@ import java.util.List;
 public class TpUserController {
     @Autowired
     private TpUserService tpUserService;
-    @PostMapping("/schemeId/{schId}/orgId/{orgId}")
+    @PostMapping("/schemes/{schId}/orgs/{orgId}")
     public ResponseEntity<TpUserDto> createTp(@Valid @RequestBody TpUserDto tpUserDto, @PathVariable Integer schId, @PathVariable Integer orgId){
         TpUserDto savedUser = this.tpUserService.registerNewTpUser(tpUserDto, schId, orgId);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);

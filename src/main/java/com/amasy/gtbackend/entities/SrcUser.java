@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -23,11 +22,8 @@ public class SrcUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotEmpty
     private String name;
-    @NotEmpty
     private String phNum;
-    @NotEmpty
     private String oprState;
     @ManyToOne
     @JoinColumn(name = "schemeId")

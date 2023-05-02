@@ -16,7 +16,7 @@ import java.util.List;
 public class SrcUSerController {
     @Autowired
     private SrcUserService srcUserService;
-    @PostMapping("/schemeId/{schId}")
+    @PostMapping("/schemes/{schId}")
     public ResponseEntity<SrcUserDto> createSrcUser(@Valid @RequestBody SrcUserDto srcUser, @PathVariable Integer schId){
         SrcUserDto savedUser = this.srcUserService.createSrcUser(srcUser, schId);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
