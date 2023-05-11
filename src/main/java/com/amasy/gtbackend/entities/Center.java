@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -43,4 +45,6 @@ public class Center {
     @ManyToOne
     @JoinColumn(name = "tp_user_id")
     private TpUser tpUser;
+    @OneToMany(mappedBy = "center", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Batch> batches = new HashSet<>();
 }
