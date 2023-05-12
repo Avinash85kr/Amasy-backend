@@ -42,6 +42,12 @@ public class BatchController {
         return new ResponseEntity<>(allBatch, HttpStatus.OK);
     }
 
+    @PutMapping("/batches/{batchId}")
+    public ResponseEntity<BatchDto> updateStatus(@RequestBody BatchDto batchDto, @PathVariable Integer batchId){
+        BatchDto batchDto1 = this.batchService.updateBatch(batchDto, batchId);
+        return new ResponseEntity<>(batchDto1, HttpStatus.OK);
+    }
+
     @PutMapping("/batch/photo/upload/{batchId}")
     public ResponseEntity<BatchDto> uploadPhoto(@RequestParam("photo")MultipartFile photo, @PathVariable Integer batchId) throws IOException {
         BatchDto batch = this.batchService.getBatchById(batchId);
