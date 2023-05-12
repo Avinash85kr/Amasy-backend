@@ -10,6 +10,7 @@ import com.amasy.gtbackend.repositories.CenterRepo;
 import com.amasy.gtbackend.services.BatchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +39,14 @@ public class BatchServiceImpl implements BatchService {
     }
 
     @Override
+    public BatchDto getBatchById(Integer batchId) {
+        Batch batch = this.batchRepo.findById(batchId).orElseThrow(() -> new ResourceNotFoundException("Batch", "Id", batchId));
+        return this.modelMapper.map(batch, BatchDto.class);
+    }
+
+    @Override
     public List<BatchDto> getAllBatch() {
-        List<Batch> batches = this.batchRepo.findAll();
+        List<Batch> batches = this.batchRepo.findAll(Sort.by(Sort.Direction.DESC, "id"));
         List<BatchDto> batchDtos = batches.stream().map((batch) -> this.modelMapper.map(batch, BatchDto.class)).collect(Collectors.toList());
         return batchDtos;
     }

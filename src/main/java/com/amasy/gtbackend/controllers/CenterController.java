@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -39,5 +40,10 @@ public class CenterController {
     public ResponseEntity<ApiResponse> deleteCen(@PathVariable Integer centerId){
         this.centerService.deleteCenter(centerId);
         return new ResponseEntity<>(new ApiResponse("Center deleted successfully !!", true), HttpStatus.OK);
+    }
+    @GetMapping("/tpUsers/{tpUserId}/centers")
+    public ResponseEntity<List<CenterDto>> getCentersByTpUser(@PathVariable Integer tpUserId){
+        List<CenterDto> centersByTpUserId = this.centerService.getCentersByTpUserId(tpUserId);
+        return new ResponseEntity<>(centersByTpUserId, HttpStatus.OK);
     }
 }

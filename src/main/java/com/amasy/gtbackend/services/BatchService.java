@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface BatchService {
     void saveBatch(MultipartFile file, Integer centerId);
+    BatchDto getBatchById(Integer batchId);
     List<BatchDto> getAllBatch();
     BatchDto updateBatch(BatchDto batchDto, Integer batchId);
     void deleteBatch(Batch batch, Integer batchId);

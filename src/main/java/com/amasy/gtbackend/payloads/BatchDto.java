@@ -43,4 +43,5 @@ public class BatchDto {
     private String photo;
     private Date addedDate;
     private String status;
+    private CenterDto center;
 }

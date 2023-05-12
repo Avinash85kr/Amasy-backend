@@ -69,4 +69,12 @@ public class CenterServiceImpl implements CenterService {
         Center center = this.centerRepo.findById(centerId).orElseThrow(() -> new ResourceNotFoundException("Center", "Id", centerId));
         this.centerRepo.delete(center);
     }
+
+    @Override
+    public List<CenterDto> getCentersByTpUserId(Integer tpUserId) {
+        TpUser tpUser = this.tpUserRepo.findById(tpUserId).orElseThrow(() -> new ResourceNotFoundException("TpUser", "Id", tpUserId));
+        List<Center> centers = this.centerRepo.getCentersByTpUser(tpUser);
+        List<CenterDto> centerDtos = centers.stream().map(center -> this.modelMapper.map(center, CenterDto.class)).collect(Collectors.toList());
+        return centerDtos;
+    }
 }
