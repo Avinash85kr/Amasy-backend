@@ -48,7 +48,6 @@ public class TpUserServiceImpl implements TpUserService {
         SchemeCat schemeCat = this.scheCatRepo.findById(schId).orElseThrow(() -> new ResourceNotFoundException("Scheme", "Id", schId));
         OrgCat orgCat = this.orgCatRepo.findById(orgId).orElseThrow(() -> new ResourceNotFoundException("Organization", "Id", orgId));
         TpUser tpUser = this.modelMapper.map(tpUserDto, TpUser.class);
-        tpUser.setPassword(this.passwordEncoder.encode(tpUser.getPassword()));
         Role role = this.roleRepo.findById(AppConstants.TP_USER).get();
         tpUser.setSchemeCategory(schemeCat);
         tpUser.setOrgCategory(orgCat);
