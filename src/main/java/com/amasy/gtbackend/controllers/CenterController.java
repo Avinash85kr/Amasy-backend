@@ -28,6 +28,11 @@ public class CenterController {
         CenterDto updated = this.centerService.updateCenter(centerDto, centerId);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
+    @PutMapping("/centers/{centerId}/{{courseId}}")
+    public ResponseEntity<CenterDto> addCenterCourse(@Valid @RequestBody CenterDto centerDto, @PathVariable Integer centerId, @PathVariable Integer[] courseId){
+        CenterDto addCourse = this.centerService.addCenterCourse(centerDto, centerId, courseId);
+        return new ResponseEntity<>(addCourse, HttpStatus.OK);
+    }
     @GetMapping("/centers")
     public ResponseEntity<CenterResponse> getAllCenter(@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false)Integer pageNumber,
                                                         @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false)Integer pageSize,

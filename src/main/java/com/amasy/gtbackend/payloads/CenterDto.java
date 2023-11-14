@@ -11,6 +11,10 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class CenterDto {
     private int id;
+    private String cenId;
+    private String centerPrId;
+    private String centerId;
+    private String prn;
     @NotEmpty
     private String cenName;
     @NotEmpty
@@ -26,29 +30,19 @@ public class CenterDto {
     private String cenTel;
     @NotEmpty
     private String cenMob;
-    @NotEmpty
     private String cenFax;
     @NotEmpty
     private String cenEmail;
     @NotEmpty
     private String ccpName;
-    @NotEmpty
     private String ccpDesig;
-    @NotEmpty
     private String ccpCitizen;
-    @NotEmpty
     private String ccpDob;
-    @NotEmpty
     private String ccpResAdd;
-    @NotEmpty
     private String ccpPerAdd;
-    @NotEmpty
     private String ccpMob1;
-    @NotEmpty
     private String ccpMob2;
-    @NotEmpty
     private String ccpEmail;
-    @NotEmpty
     private String ccpQuali;
     @NotEmpty
     private String ccpExp;
@@ -58,4 +52,5 @@ public class CenterDto {
     private String cenStatus;
     private String snaStatus;
     private TpUserDto tpUser;
+    private CourseDto courseDto;
 }

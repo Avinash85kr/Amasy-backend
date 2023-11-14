@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,6 +18,10 @@ public class Center {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    private int cenId;
+    private String centerPrId;
+    private String centerId;
+    private String prn;
     private String cenName;
     private String cenAdd;
     private String cenDist;
@@ -45,6 +51,9 @@ public class Center {
     @ManyToOne
     @JoinColumn(name = "tp_user_id")
     private TpUser tpUser;
+    @ManyToMany
+    @JoinColumn(name = "courseId")
+    private List<Course> courses = new ArrayList<>();
     @OneToMany(mappedBy = "center", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Batch> batches = new HashSet<>();
 }
