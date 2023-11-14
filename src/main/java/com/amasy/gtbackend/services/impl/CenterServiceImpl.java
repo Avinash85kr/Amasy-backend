@@ -1,11 +1,13 @@
 package com.amasy.gtbackend.services.impl;
 
 import com.amasy.gtbackend.entities.Center;
+import com.amasy.gtbackend.entities.Course;
 import com.amasy.gtbackend.entities.TpUser;
 import com.amasy.gtbackend.exceptions.ResourceNotFoundException;
 import com.amasy.gtbackend.payloads.CenterDto;
 import com.amasy.gtbackend.payloads.CenterResponse;
 import com.amasy.gtbackend.repositories.CenterRepo;
+import com.amasy.gtbackend.repositories.CourseRepo;
 import com.amasy.gtbackend.repositories.TpUserRepo;
 import com.amasy.gtbackend.services.CenterService;
 import org.modelmapper.ModelMapper;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,8 @@ public class CenterServiceImpl implements CenterService {
     private ModelMapper modelMapper;
     @Autowired
     private CenterRepo centerRepo;
+    @Autowired
+    private CourseRepo courseRepo;
     @Autowired
     private TpUserRepo tpUserRepo;
     @Override
@@ -45,6 +50,15 @@ public class CenterServiceImpl implements CenterService {
         center.setSnaStatus(centerDto.getSnaStatus());
         Center updatedCenter = this.centerRepo.save(center);
         return this.modelMapper.map(updatedCenter, CenterDto.class);
+    }
+
+    @Override
+    public CenterDto addCenterCourse(CenterDto centerDto, Integer centerId, Integer[] courseId) {
+        Center center = this.centerRepo.findById(centerId).orElseThrow(() -> new ResourceNotFoundException("Center", "Id", centerId));
+        List<Course> course = Arrays.stream(courseId).map((cour) -> this.courseRepo.findById(cour).orElseThrow(() -> new ResourceNotFoundException("Course", "Id", cour))).collect(Collectors.toList());
+        center.setCourses(course);
+        Center updateCenter = this.centerRepo.save(center);
+        return this.modelMapper.map(updateCenter, CenterDto.class);
     }
 
     @Override
