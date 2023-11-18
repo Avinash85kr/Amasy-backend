@@ -18,7 +18,7 @@ public class Center {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int cenId;
+    private String cenId;
     private String centerPrId;
     private String centerId;
     private String prn;

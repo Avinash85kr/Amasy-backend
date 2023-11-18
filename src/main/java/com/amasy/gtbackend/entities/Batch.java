@@ -47,6 +47,7 @@ public class Batch {
     private String photo;
     private Date addedDate;
     private String status;
+    private String projectId;
     @ManyToOne
     @JoinColumn(name = "centerId")
     private Center center;

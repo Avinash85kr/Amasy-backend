@@ -1,9 +1,11 @@
 package com.amasy.gtbackend.controllers;
 
 import com.amasy.gtbackend.entities.Batch;
+import com.amasy.gtbackend.entities.Center;
 import com.amasy.gtbackend.helper.ExcelHelper;
 import com.amasy.gtbackend.payloads.ApiResponse;
 import com.amasy.gtbackend.payloads.BatchDto;
+import com.amasy.gtbackend.payloads.BatchResponse;
 import com.amasy.gtbackend.services.BatchService;
 import com.amasy.gtbackend.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +69,10 @@ public class BatchController {
     public ResponseEntity<List<BatchDto>> getBatch(@PathVariable Integer centerId){
         List<BatchDto> batchesByCenterId = this.batchService.getBatchByCenterId(centerId);
         return new ResponseEntity<>(batchesByCenterId, HttpStatus.OK);
+    }
+    @GetMapping("/batchStatus/{centerId}")
+    public ResponseEntity<BatchResponse> batchStatus(@PathVariable Integer centerId){
+        BatchResponse batchResponse = this.batchService.batchStatus(centerId);
+        return new ResponseEntity<>(batchResponse, HttpStatus.OK);
     }
 }
