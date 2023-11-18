@@ -44,4 +44,5 @@ public class BatchDto {
     private Date addedDate;
     private String status;
     private CenterDto center;
+    private String projectId;
 }

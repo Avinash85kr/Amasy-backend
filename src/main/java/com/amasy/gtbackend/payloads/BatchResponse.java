@@ -11,5 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 public class BatchResponse {
     List<BatchDto> content;
+    private int pending;
+    private int centerId;
+    private String centerName;
+    private int ongoingBatches;
+    private int completedBatches;
+    private String projectId;
     private int totalElements;
 }

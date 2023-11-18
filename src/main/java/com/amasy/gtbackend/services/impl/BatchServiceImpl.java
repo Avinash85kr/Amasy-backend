@@ -5,6 +5,7 @@ import com.amasy.gtbackend.entities.Center;
 import com.amasy.gtbackend.exceptions.ResourceNotFoundException;
 import com.amasy.gtbackend.helper.ExcelHelper;
 import com.amasy.gtbackend.payloads.BatchDto;
+import com.amasy.gtbackend.payloads.BatchResponse;
 import com.amasy.gtbackend.repositories.BatchRepo;
 import com.amasy.gtbackend.repositories.CenterRepo;
 import com.amasy.gtbackend.services.BatchService;
@@ -72,5 +73,25 @@ public class BatchServiceImpl implements BatchService {
         List<Batch> batchByCenter = this.batchRepo.findBatchByCenter(center);
         List<BatchDto> batchDtos = batchByCenter.stream().map(batch -> this.modelMapper.map(batch, BatchDto.class)).collect(Collectors.toList());
         return batchDtos;
+    }
+
+    @Override
+    public BatchResponse batchStatus(Integer centerId) {
+        Center center = this.centerRepo.findById(centerId).orElseThrow(() -> new ResourceNotFoundException("Center", "Id", centerId));
+        List<Batch> batches = this.batchRepo.findBatchByCenter(center);
+        BatchResponse batchResponse = new BatchResponse();
+            List<Batch> pendingBatches = this.batchRepo.pendingBatch(center);
+            List<Batch> ongoingBatch = this.batchRepo.ongoingBatch(center);
+            List<Batch> completeBatch = this.batchRepo.completeBatch(center);
+            List<BatchDto> batchDtos = batches.stream().map((batch) -> this.modelMapper.map(batch, BatchDto.class)).collect(Collectors.toList());
+            batchResponse.setContent(batchDtos);
+            batchResponse.setTotalElements(batches.size());
+            batchResponse.setPending(pendingBatches.size());
+            batchResponse.setProjectId(center.getCenterPrId());
+            batchResponse.setCenterId(centerId);
+            batchResponse.setCenterName(center.getCenName());
+            batchResponse.setOngoingBatches(ongoingBatch.size());
+            batchResponse.setCompletedBatches(completeBatch.size());
+        return batchResponse;
     }
 }
