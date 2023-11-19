@@ -83,10 +83,8 @@ public class BatchServiceImpl implements BatchService {
             List<Batch> pendingBatches = this.batchRepo.pendingBatch(center);
             List<Batch> ongoingBatch = this.batchRepo.ongoingBatch(center);
             List<Batch> completeBatch = this.batchRepo.completeBatch(center);
-            List<BatchDto> batchDtos = batches.stream().map((batch) -> this.modelMapper.map(batch, BatchDto.class)).collect(Collectors.toList());
-            batchResponse.setContent(batchDtos);
-            batchResponse.setTotalElements(batches.size());
-            batchResponse.setPending(pendingBatches.size());
+            batchResponse.setTotalBatches(batches.size());
+            batchResponse.setPendingBatches(pendingBatches.size());
             batchResponse.setProjectId(center.getCenterPrId());
             batchResponse.setCenterId(centerId);
             batchResponse.setCenterName(center.getCenName());

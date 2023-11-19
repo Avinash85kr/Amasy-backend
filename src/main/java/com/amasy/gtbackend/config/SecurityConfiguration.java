@@ -43,7 +43,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers(("/api/v1/batchStatus/{centerId}")).permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/batchStatus/{centerId}").hasAnyAuthority("TP_USER", "SRC_USER")
                 .antMatchers(HttpMethod.GET, "/api/v1/courses/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/courses/").hasAnyAuthority("SRC_USER")
                 .antMatchers(HttpMethod.DELETE, "/api/v1/courses/{courseId}").hasAuthority("SRC_USER")
