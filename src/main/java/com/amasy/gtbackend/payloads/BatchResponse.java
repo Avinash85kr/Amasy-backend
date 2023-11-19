@@ -10,12 +10,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class BatchResponse {
-    List<BatchDto> content;
-    private int pending;
+    private int pendingBatches;
     private int centerId;
     private String centerName;
     private int ongoingBatches;
     private int completedBatches;
     private String projectId;
-    private int totalElements;
+    private int totalBatches;
 }
